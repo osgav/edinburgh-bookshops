@@ -1,6 +1,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
-// initialize Leaflet map
+//// initialize Leaflet map
 //
 var map = L.map("map", {
   zoomSnap: 0.05
@@ -8,7 +8,7 @@ var map = L.map("map", {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// configure map debug information
+//// configure map debug information
 //
 map.whenReady(updateDebugInfoZoom);
 map.whenReady(updateDebugInfoBounds);
@@ -41,14 +41,14 @@ function updateDebugInfoMouse(event) {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// configure basemap
+//// configure basemap
 //
 var basemap = protomapsL.leafletLayer({url: "edinburgh.pmtiles", theme: "white"});
 basemap.addTo(map);
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// configure point styles
+//// configure point styles
 //
 var style_point = {
     radius: 16,
@@ -68,8 +68,23 @@ var style_bookshop_point = {
     opacity: 1,
 };
 
+function style_bookshop_point_reset(feature) {
+  return style_bookshop_point;
+}
+
+function style_bookshop_point_selected(feature) {
+  return {
+    radius: 16,
+    weight: 4,
+    color: "#954AA2",
+    fillColor: "#954AA2",
+    fillOpacity: 0.7,
+    opacity: 1,
+  };
+}
+
 ////////////////////////////////////////////////////////////////////////////////
-// load features
+//// load features
 //
 const bookshops = L.geoJson(bookshop_points, {
   pointToLayer: function (feature, latlng) {
@@ -82,7 +97,7 @@ const bookshops = L.geoJson(bookshop_points, {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// ...
+//// ...
 //
 function zoomToFeature(e) {
   map.fitBounds(e.target.getBounds());
@@ -96,14 +111,41 @@ function style(feature) {
 }
 
 
+function updateInfoBox(bookshop_name) {
+  const infoBoxName = document.querySelector("#bookshop-name");
+  infoBoxName.textContent = bookshop_name;
+}
+
+function clearInfoBox() {
+  const infoBoxName = document.querySelector("#bookshop-name");
+  infoBoxName.textContent = "";
+}
+
+function selectBookshop(e) {
+  showInfoBox();
+  updateInfoBox(e.target.feature.properties.name);
+  console.log(e);
+  e.target.setStyle(style_bookshop_point_selected(e.target.feature));
+  e.target.setRadius(26);
+}
+
+function deselectBookshop(e) {
+  hideInfoBox();
+  clearInfoBox();
+  e.target.setStyle(style_bookshop_point_reset(e.target.feature));
+  e.target.setRadius(16);
+}
+
 
 function onEachFeature(feature, layer) {
   if (feature.properties && feature.properties.name) {
     layer.bindPopup(feature.properties.name);
   }
-  //layer.on({
+  layer.on({
   //  click: zoomToFeature,
-  //});
+    popupopen: selectBookshop,
+    popupclose: deselectBookshop,
+  });
 }
 
 
@@ -118,4 +160,28 @@ map.on("zoomend", function() {
     map.addLayer(pointMarkers);
   }
 });
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+//// define info box behaviour
+//
+const infoBox = document.querySelector("#infobox");
+const closeInfoBoxBtn = document.querySelector("#close-info");
+
+// info box should be hidden on load
+//infoBox.style.visibility = "hidden";
+
+closeInfoBoxBtn.addEventListener("click", hideInfoBox);
+
+function showInfoBox() {
+  //infoBox.style.visibility = "visible";
+  infoBox.classList.remove("hide");
+}
+
+function hideInfoBox() {
+  //infoBox.style.visibility = "hidden";
+  infoBox.classList.add("hide");
+}
 
