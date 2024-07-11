@@ -9,6 +9,10 @@ html, body, #map {
   width: 100vw;
 }
 
+h3 {
+  margin: 0;
+}
+
 .debug-info {
   margin: 5px 0px 5px 0px;
   padding: 0px 5px 0px 5px;
@@ -36,8 +40,25 @@ html, body, #map {
 .bookshop-info {
   display: flex;
   flex-direction: column;
+  gap: 20px;
   padding: 10px;
 }
+
+.bookshop-title {
+  margin-top: 10px;
+}
+
+.bookshop-address {
+  display: flex;
+  flex-direction: column;
+}
+
+.bookshop-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 
 .infobox {
   display: flex;

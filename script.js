@@ -7,6 +7,7 @@ var map = L.map("map", {
 }) .setView([55.9400, -3.1925], 12.35);
 
 
+
 ////////////////////////////////////////////////////////////////////////////////
 //// configure map debug information
 //
@@ -40,11 +41,13 @@ function updateDebugInfoMouse(event) {
 }
 
 
+
 ////////////////////////////////////////////////////////////////////////////////
 //// configure basemap
 //
 var basemap = protomapsL.leafletLayer({url: "edinburgh.pmtiles", theme: "white"});
 basemap.addTo(map);
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -83,6 +86,8 @@ function style_bookshop_point_selected(feature) {
   };
 }
 
+
+
 ////////////////////////////////////////////////////////////////////////////////
 //// load features
 //
@@ -93,6 +98,59 @@ const bookshops = L.geoJson(bookshop_points, {
   onEachFeature
 });
 
+
+
+////////////////////////////////////////////////////////////////////////////////
+//// define info box behaviour
+//
+const infoBox = document.querySelector("#infobox");
+const closeInfoBoxBtn = document.querySelector("#close-info");
+
+closeInfoBoxBtn.addEventListener("click", hideInfoBox);
+
+function showInfoBox() {
+  //infoBox.style.visibility = "visible";
+  infoBox.classList.remove("hide");
+}
+
+function hideInfoBox() {
+  //infoBox.style.visibility = "hidden";
+  infoBox.classList.add("hide");
+}
+
+function updateInfoBox(bookshop_data) {
+  const infoBoxBookshopName = document.querySelector("#bookshop-name");
+  const infoBoxBookshopAddress1 = document.querySelector("#bookshop-address-line-1");
+  const infoBoxBookshopAddress2 = document.querySelector("#bookshop-address-line-2");
+  const infoBoxBookshopPostcode = document.querySelector("#bookshop-postcode");
+  const infoBoxBookshopCity = document.querySelector("#bookshop-city");
+  const infoBoxBookshopWebsite = document.querySelector("#bookshop-website");
+  const infoBoxBookshopGoogleMaps = document.querySelector("#bookshop-google-maps");
+  infoBoxBookshopName.textContent = bookshop_data.name;
+  infoBoxBookshopAddress1.textContent = bookshop_data.address_line_1;
+  infoBoxBookshopAddress2.textContent = bookshop_data.address_line_2;
+  infoBoxBookshopPostcode.textContent = bookshop_data.postcode;
+  infoBoxBookshopCity.textContent = bookshop_data.city;
+  infoBoxBookshopWebsite.textContent = bookshop_data.website;
+  infoBoxBookshopGoogleMaps.textContent = bookshop_data.google_maps;
+}
+
+function clearInfoBox() {
+  const infoBoxBookshopName = document.querySelector("#bookshop-name");
+  const infoBoxBookshopAddress1 = document.querySelector("#bookshop-address-line-1");
+  const infoBoxBookshopAddress2 = document.querySelector("#bookshop-address-line-2");
+  const infoBoxBookshopPostcode = document.querySelector("#bookshop-postcode");
+  const infoBoxBookshopCity = document.querySelector("#bookshop-city");
+  const infoBoxBookshopWebsite = document.querySelector("#bookshop-website");
+  const infoBoxBookshopGoogleMaps = document.querySelector("#bookshop-google-maps");
+  infoBoxBookshopName.textContent = "";
+  infoBoxBookshopAddress1.textContent = "";
+  infoBoxBookshopAddress2.textContent = "";
+  infoBoxBookshopPostcode.textContent = "";
+  infoBoxBookshopCity.textContent = "";
+  infoBoxBookshopWebsite.textContent = "";
+  infoBoxBookshopGoogleMaps.textContent = "";
+}
 
 
 
@@ -111,19 +169,11 @@ function style(feature) {
 }
 
 
-function updateInfoBox(bookshop_name) {
-  const infoBoxName = document.querySelector("#bookshop-name");
-  infoBoxName.textContent = bookshop_name;
-}
 
-function clearInfoBox() {
-  const infoBoxName = document.querySelector("#bookshop-name");
-  infoBoxName.textContent = "";
-}
 
 function selectBookshop(e) {
   showInfoBox();
-  updateInfoBox(e.target.feature.properties.name);
+  updateInfoBox(e.target.feature.properties);
   console.log(e);
   e.target.setStyle(style_bookshop_point_selected(e.target.feature));
   e.target.setRadius(26);
@@ -164,24 +214,5 @@ map.on("zoomend", function() {
 
 
 
-////////////////////////////////////////////////////////////////////////////////
-//// define info box behaviour
-//
-const infoBox = document.querySelector("#infobox");
-const closeInfoBoxBtn = document.querySelector("#close-info");
 
-// info box should be hidden on load
-//infoBox.style.visibility = "hidden";
-
-closeInfoBoxBtn.addEventListener("click", hideInfoBox);
-
-function showInfoBox() {
-  //infoBox.style.visibility = "visible";
-  infoBox.classList.remove("hide");
-}
-
-function hideInfoBox() {
-  //infoBox.style.visibility = "hidden";
-  infoBox.classList.add("hide");
-}
 
