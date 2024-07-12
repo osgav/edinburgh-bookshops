@@ -40,7 +40,7 @@ h3 {
 .bookshop-info {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 40px;
   padding: 10px;
 }
 
@@ -56,7 +56,13 @@ h3 {
 .bookshop-links {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 18px;
+}
+
+.bookshop-links a {
+  text-decoration: none;
+  color: #FDFDFD;
+  font-size: 0.8em;
 }
 
 
@@ -106,4 +112,34 @@ h3 {
     visibility: hidden;
   }
 
+}
+
+#bookshop-website::before {
+  content: url("img/globe.svg");
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  filter: grayscale(100%) brightness(150%);
+  vertical-align: middle;
+}
+
+#bookshop-google-maps::before {
+  content: url("img/google-maps.svg");
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  filter: grayscale(100%) brightness(150%);
+  vertical-align: middle;
+}
+
+#bookshop-apple-maps::before {
+  content: url("img/apple.svg");
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  filter: invert(100%) brightness(75%);
+  vertical-align: -30%;
 }

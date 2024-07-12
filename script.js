@@ -126,13 +126,30 @@ function updateInfoBox(bookshop_data) {
   const infoBoxBookshopCity = document.querySelector("#bookshop-city");
   const infoBoxBookshopWebsite = document.querySelector("#bookshop-website");
   const infoBoxBookshopGoogleMaps = document.querySelector("#bookshop-google-maps");
+  const infoBoxBookshopAppleMaps = document.querySelector("#bookshop-apple-maps");
   infoBoxBookshopName.textContent = bookshop_data.name;
   infoBoxBookshopAddress1.textContent = bookshop_data.address_line_1;
   infoBoxBookshopAddress2.textContent = bookshop_data.address_line_2;
   infoBoxBookshopPostcode.textContent = bookshop_data.postcode;
   infoBoxBookshopCity.textContent = bookshop_data.city;
-  infoBoxBookshopWebsite.textContent = bookshop_data.website;
-  infoBoxBookshopGoogleMaps.textContent = bookshop_data.google_maps;
+
+  const linkWebsite = document.createElement("a");
+  linkWebsite.href = bookshop_data.website; // TODO: handle "null" for bookshops without websites
+  linkWebsite.target = "_blank";
+  linkWebsite.appendChild(document.createTextNode("visit website"));
+  infoBoxBookshopWebsite.appendChild(linkWebsite);
+
+  const linkGoogleMaps = document.createElement("a");
+  linkGoogleMaps.href = bookshop_data.google_maps;
+  linkGoogleMaps.target = "_blank";
+  linkGoogleMaps.appendChild(document.createTextNode("view on Google Maps"));
+  infoBoxBookshopGoogleMaps.appendChild(linkGoogleMaps);
+
+  const linkAppleMaps = document.createElement("a");
+  linkAppleMaps.href = bookshop_data.google_maps; // TODO: collect Apple Maps links and update this
+  linkAppleMaps.target = "_blank";
+  linkAppleMaps.appendChild(document.createTextNode("view on Apple Maps"));
+  infoBoxBookshopAppleMaps.appendChild(linkAppleMaps);
 }
 
 function clearInfoBox() {
@@ -143,6 +160,7 @@ function clearInfoBox() {
   const infoBoxBookshopCity = document.querySelector("#bookshop-city");
   const infoBoxBookshopWebsite = document.querySelector("#bookshop-website");
   const infoBoxBookshopGoogleMaps = document.querySelector("#bookshop-google-maps");
+  const infoBoxBookshopAppleMaps = document.querySelector("#bookshop-apple-maps");
   infoBoxBookshopName.textContent = "";
   infoBoxBookshopAddress1.textContent = "";
   infoBoxBookshopAddress2.textContent = "";
@@ -150,6 +168,7 @@ function clearInfoBox() {
   infoBoxBookshopCity.textContent = "";
   infoBoxBookshopWebsite.textContent = "";
   infoBoxBookshopGoogleMaps.textContent = "";
+  infoBoxBookshopAppleMaps.textContent = "";
 }
 
 
